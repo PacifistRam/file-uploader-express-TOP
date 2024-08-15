@@ -1,0 +1,8 @@
+<% layout("./layout/boilerplate") %>
+
+<div class="main-wrapper">
+    <%- include('./layout/navbar') %>
+    <% if (currentUser) { %>
+     <h2>Welcome <%= currentUser.userName %></h2>
+    <% } %>
+</div>
