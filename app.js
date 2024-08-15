@@ -23,7 +23,7 @@ app.use(
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000, //ms
     },
-    secret: "a cat ate my rat",
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
     store: new PrismaSessionStore(new PrismaClient(), {
