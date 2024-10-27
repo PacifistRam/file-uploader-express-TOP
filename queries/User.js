@@ -47,7 +47,12 @@ class User {
                 data: {
                     userName: uName,
                     email: email,
-                    password: password
+                    password: password,
+                    folders:{
+                        create:{
+                            folderName:'Home',
+                        }
+                    }
                 }
             })
             if(result) {

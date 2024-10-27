@@ -46,7 +46,22 @@ app.use(express.urlencoded({ extended: true}))
 app.use("/", userRouter);
 app.use("/dashboard", dashboardRouter);
 
+// 404 Error Handling Middleware 
+app.use((req, res, next) => {
+  res.status(404).render('error',{
+    title: "404 Page Not Found",
+    message: "Sorry, The page you are looking for does not exist."
+  })
+})
 
+// General Error handling Middleware(for errors other than 404)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render("error",{
+    title: "Server Error",
+    message: err.message || "Something went wrong on the server"
+  })
+})
 
 
 const PORT = process.env.PORT || 8000;

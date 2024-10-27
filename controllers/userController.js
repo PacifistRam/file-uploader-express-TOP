@@ -102,19 +102,86 @@ exports.getSignUp = asyncHandler(async (req, res) => {
     })
 })
 
-exports.postSignUp = asyncHandler(async (req, res) => {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const result = await userService.createNewUser(
-        req.body.userName,
-        req.body.email,
-        hashedPassword,
-    );
-    if(result.success === true) {
-        res.json({Message: "user created ", user: result.data})
-    }else{
-        res.json({message: "user Not Created"})
+exports.postSignUp = [
+  body("userName")
+    .trim()
+    .notEmpty()
+    .withMessage("Username cannot be empty")
+    .isLength({ min: 4, max: 15 })
+    .withMessage("Username need to be between 4 to 15 characters ")
+    .matches(/^[^\s'"<>/]+$/)
+    .withMessage("username cannot contain any punctuation marks or whitespaces")
+    .escape(),
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email cannot be empty")
+    .isEmail()
+    .withMessage("There needs to be a valid email")
+    .escape(),
+  
+    body("password")
+    .trim()
+    .notEmpty()
+    .withMessage("Password cannot be empty")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long")
+    .matches(/[A-Z]/)
+    .withMessage("Password must contain at least one uppercase letter")
+    .matches(/[a-z]/)
+    .withMessage("Password must contain at least one lowercase letter")
+    .matches(/[\d]/)
+    .withMessage("Password must contain at least one number")
+    .matches(/[@$!%*?&#]/)
+    .withMessage(
+      "Password must contain at least one special character (@, $, !, %, *, ?, &, #)"
+    )
+    .matches(/^(?!.*\s).+$/)
+    .withMessage("Password cannot contain spaces"),
+  body("confirmPassword")
+    .trim()
+    .notEmpty()
+    .withMessage("Confirm Password Field cannot be empty")
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error("Passwords do not match");
+      }
+      return true;
+    }),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.render("sign-up", {
+        title: "Sign Up",
+        errors: errors.array(),
+        dbErrorMsg: null,
+        formField: req.body,
+      });
+    } else {
+      try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const result = await userService.createNewUser(
+          req.body.userName,
+          req.body.email,
+          hashedPassword
+        );
+        if (result.success === true) {
+          res.redirect("/log-in?registered=true");
+        } else {
+          res.render("sign-up", {
+            title: "sign-up form",
+            errors: null,
+            dbErrorMsg: result.message,
+            formField: req.body,
+          });
+        }
+      } catch (error) {
+        return next(error)
+      }
     }
-})
+  }),
+];
 
 
 

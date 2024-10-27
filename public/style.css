@@ -3,3 +3,84 @@
 html{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+body{
+    background-color: #080710;
+    color: #ffffff;
+}
+/* form css */
+label{
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    color: #ffffff;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+::placeholder{
+    color: #e5e5e5;
+}
+button{
+    margin-top: 50px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* ---------------------------------------------------------- */
+/* login page */
+.form-wrapper {
+    display: grid;
+    gap: 2rem;
+    place-items: center;
+}
+.form-wrapper >*{
+    width: clamp(150px, 400px, 60vw);
+}
+.form-wrapper h1{
+    text-align: center;
+    text-transform: capitalize;
+    margin-bottom: 0;
+    font-size: 2rem;
+}
+
+
+/* --------Dashboard Page */
+.dashboard-wrapper{
+    display: flex;
+    gap: 1rem;
+}
+.form-group{
+   flex: 0 1 30%;
+}
+.file-explorer{
+    flex: 1 1 auto;
+}
+
+.form-group.dashboard{
+    display: grid;
+    gap: 1rem;
+}
+.dashboard-upload{
+    width: 100%;
+    display: block;
+}
+.dashboard-upload input{
+    margin: 0;
+}
+.dashboard-upload input[hidden] {
+    display: none;
+}

@@ -27,8 +27,11 @@ model Folder {
   folderName String
   ownerId    Int 
   owner      User @relation(fields: [ownerId], references: [id])
+  parentId   Int? 
+  parent     Folder? @relation("SubFolders", fields:    [parentId], references: [id])
+  subFolders Folder[] @relation("SubFolders") 
   files      FileImage[]
-
+  @@index([parentId])
   @@unique([ownerId, folderName]) // Ensures folder names are unique
 }
 

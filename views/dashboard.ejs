@@ -4,5 +4,68 @@
     <%- include('./layout/navbar') %>
     <% if (currentUser) { %>
      <h2>Welcome <%= currentUser.userName %></h2>
+     <div class="dashboard-wrapper">
+         <div class="form-group dashboard">
+            <form class="dashboard-upload" action="/dashboard/create-file" method="post" enctype="multipart/form-data">
+                <label for="file-upload">Upload:</label>
+                <input type="file" name="uploadImage" id="file-upload" required>
+                <input type="text" name="parentId" value="<%= folders.id %>" hidden>
+                <input type="text" name="ownerId" value="<%= folders.ownerId %>" hidden>
+                <button type="submit">Upload Image</button>
+            </form>
+             <form class="dashboard-upload" action="/dashboard/create-folder" method="post">
+                <label for="folderName">Folder Name:</label>
+                <input type="text" name="folderName" required id="folderName">
+                <input type="text" name = parentId value="<%= folders.id %>" hidden>
+                <button type="submit">Create</button>
+             </div>
+         </form-group>
+         <div class="file-explorer">
+            <section class="breadcrumb-bar">
+                <% if (breadcrumbs) { %>
+                    <% if (breadcrumbs.length) { %>
+                        <span><a href="/dashboard">Home</a></span>
+                        <span>//</span>
+                        <% breadcrumbs.forEach(breadcrumb => { %>
+                            <% if (breadcrumb.id !== folders.id) { %>
+                                <span><a href=<%= `/dashboard/folder/${breadcrumb.id}` %>>
+                                <%=breadcrumb.fname  %></a></span>
+                             <span>//</span>
+                             <% }else{%>
+                                <span class="current-folder">
+                                    <%=breadcrumb.fname  %>
+                                </span>
+                             <%} %>
+                             
+                        <% }) %>
+                    <% } %>
+                <% }else{%>
+
+                <%} %>
+            </section>
+            <h2><%= folders.folderName %></h2>
+            <% if (folders.subFolders.length) { %>
+             <p>
+                <h3>Sub Folders:</h3>
+                <ul>
+                    <% folders.subFolders.forEach(subfolder => { %>
+                        <li><a href=<%= `/dashboard/folder/${subfolder.id}` %>><%= subfolder.folderName %></a></li>
+                    <% }) %>
+                </ul>
+            </p>
+            <% } %>
+            <% if (folders.files.length) { %>
+             <h3>Files</h3>
+             <ul>
+                <% folders.files.forEach(file => { %>
+                 <li><%= file.fileName %></li>
+                <% }) %>
+             </ul>
+            <% } %>
+            <% if (!folders.subFolders.length && !folders.files.length) { %>
+             <p>No Data Found </p>
+            <% } %>
+         </div>
+     </div>
     <% } %>
 </div>

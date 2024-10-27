@@ -4,8 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
-    "startdev": "node --watch app.js" 
-
+    "startdev": "node --watch app.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +14,7 @@
     "@prisma/client": "^5.18.0",
     "@quixo3/prisma-session-store": "^3.1.13",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.4.0",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
